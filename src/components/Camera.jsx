@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 
-const ResponsiveCamera = () => {
+const FullHeightCamera = () => {
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
   const [flashEffect, setFlashEffect] = useState(false);
@@ -36,7 +36,7 @@ const ResponsiveCamera = () => {
   };
 
   return (
-    <div className="relative w-full aspect-[4/3] bg-gray-900 overflow-hidden max-h-screen">
+    <div className="relative w-full h-screen bg-black overflow-hidden">
       {/* Flash Effect */}
       {flashEffect && (
         <div className="absolute inset-0 bg-white animate-flash"></div>
@@ -97,14 +97,14 @@ const ResponsiveCamera = () => {
         </div>
       )}
 
-      {/* Action Buttons */}
+      {/* Action Buttons - Fixed at bottom */}
       <div className="absolute bottom-4 left-0 right-0 flex justify-center">
         {imgSrc ? (
-          <div className="flex space-x-4 bg-black bg-opacity-40 backdrop-blur-sm rounded-full p-2">
-            {/* Retake Button - Now properly visible */}
+          <div className="flex space-x-6 bg-black bg-opacity-40 backdrop-blur-sm rounded-full p-3">
+            {/* Retake Button */}
             <button
               onClick={retake}
-              className="flex items-center justify-center bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-3 transition-all"
+              className="flex items-center justify-center bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-4 transition-all"
               aria-label="Retake photo"
             >
               <svg
@@ -126,7 +126,7 @@ const ResponsiveCamera = () => {
             {/* Save/Confirm Button */}
             <button
               onClick={savePhoto}
-              className="flex items-center justify-center bg-green-500 hover:bg-green-600 rounded-full p-3 transition-all"
+              className="flex items-center justify-center bg-green-500 hover:bg-green-600 rounded-full p-4 transition-all"
               aria-label="Save photo"
             >
               <svg
@@ -149,7 +149,7 @@ const ResponsiveCamera = () => {
           <button
             onClick={capture}
             disabled={permissionError}
-            className={`relative h-14 w-14 rounded-full border-4 border-white ${
+            className={`relative h-16 w-16 rounded-full border-4 border-white ${
               permissionError ? "bg-gray-500" : "bg-red-500 hover:bg-red-600"
             } shadow-lg transition-all`}
             aria-label="Take photo"
@@ -177,4 +177,4 @@ const ResponsiveCamera = () => {
   );
 };
 
-export default ResponsiveCamera;
+export default FullHeightCamera;
