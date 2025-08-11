@@ -1,25 +1,20 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 
-const PremiumCamera = () => {
+const ResponsiveCamera = () => {
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
   const [flashEffect, setFlashEffect] = useState(false);
-  const [buttonPulse, setButtonPulse] = useState(false);
   const [permissionError, setPermissionError] = useState(false);
 
   const capture = () => {
     if (!webcamRef.current) return;
 
-    // Visual feedback
-    setButtonPulse(true);
     setFlashEffect(true);
-
     setTimeout(() => {
       const imageSrc = webcamRef.current.getScreenshot();
       setImgSrc(imageSrc);
       setFlashEffect(false);
-      setButtonPulse(false);
     }, 200);
   };
 
@@ -41,7 +36,7 @@ const PremiumCamera = () => {
   };
 
   return (
-    <div className="relative h-screen w-full bg-gray-900 overflow-hidden">
+    <div className="relative w-full aspect-[4/3] bg-gray-900 overflow-hidden max-h-screen">
       {/* Flash Effect */}
       {flashEffect && (
         <div className="absolute inset-0 bg-white animate-flash"></div>
@@ -52,7 +47,7 @@ const PremiumCamera = () => {
         <img
           src={imgSrc}
           alt="Captured"
-          className="h-full w-full object-cover transform transition-transform duration-300 hover:scale-105"
+          className="w-full h-full object-cover"
         />
       ) : (
         <Webcam
@@ -64,7 +59,7 @@ const PremiumCamera = () => {
             width: { ideal: 1920 },
             height: { ideal: 1080 },
           }}
-          className="h-full w-full object-cover"
+          className="w-full h-full object-cover"
           onUserMediaError={handleError}
           onUserMedia={handleLoad}
         />
@@ -72,11 +67,11 @@ const PremiumCamera = () => {
 
       {/* Error Message */}
       {permissionError && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-90 text-white p-8 text-center">
-          <div className="bg-red-500 rounded-full p-4 mb-4">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-90 text-white p-4 text-center">
+          <div className="bg-red-500 rounded-full p-3 mb-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-12 w-12"
+              className="h-8 w-8"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -89,31 +84,32 @@ const PremiumCamera = () => {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold mb-2">Camera Access Required</h2>
-          <p className="mb-6 text-gray-300">
-            Please allow camera permissions in your browser settings
+          <h2 className="text-xl font-bold mb-2">Camera Access Required</h2>
+          <p className="mb-4 text-gray-300 text-sm">
+            Please enable camera permissions in your browser settings
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-full font-medium transition-all transform hover:scale-105"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-full text-sm"
           >
-            Reload & Allow Access
+            Reload & Allow
           </button>
         </div>
       )}
 
       {/* Action Buttons */}
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center">
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center">
         {imgSrc ? (
-          <div className="flex space-x-8">
-            {/* Retake Button */}
+          <div className="flex space-x-4 bg-black bg-opacity-40 backdrop-blur-sm rounded-full p-2">
+            {/* Retake Button - Now properly visible */}
             <button
               onClick={retake}
-              className="flex items-center justify-center bg-white bg-opacity-20 backdrop-blur-lg rounded-full p-5 shadow-xl transform transition-all hover:scale-110 hover:bg-opacity-30"
+              className="flex items-center justify-center bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-3 transition-all"
+              aria-label="Retake photo"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-white"
+                className="h-6 w-6 text-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -130,11 +126,12 @@ const PremiumCamera = () => {
             {/* Save/Confirm Button */}
             <button
               onClick={savePhoto}
-              className="flex items-center justify-center bg-green-500 rounded-full p-5 shadow-xl transform transition-all hover:scale-110 hover:bg-green-600"
+              className="flex items-center justify-center bg-green-500 hover:bg-green-600 rounded-full p-3 transition-all"
+              aria-label="Save photo"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-white"
+                className="h-6 w-6 text-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -152,17 +149,12 @@ const PremiumCamera = () => {
           <button
             onClick={capture}
             disabled={permissionError}
-            className={`relative h-16 w-16 rounded-full border-4 border-white ${
+            className={`relative h-14 w-14 rounded-full border-4 border-white ${
               permissionError ? "bg-gray-500" : "bg-red-500 hover:bg-red-600"
-            } shadow-2xl transition-all duration-300 ${
-              buttonPulse ? "transform scale-125" : "hover:scale-110"
-            }`}
+            } shadow-lg transition-all`}
+            aria-label="Take photo"
           >
-            <span className="absolute inset-0 flex items-center justify-center">
-              {buttonPulse && (
-                <span className="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping"></span>
-              )}
-            </span>
+            <span className="sr-only">Capture photo</span>
           </button>
         )}
       </div>
@@ -185,4 +177,4 @@ const PremiumCamera = () => {
   );
 };
 
-export default PremiumCamera;
+export default ResponsiveCamera;
