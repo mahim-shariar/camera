@@ -100,7 +100,7 @@ const FullScreenCamera = () => {
               className="flex items-center justify-center bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-4 transition-all"
               aria-label="Retake photo"
             >
-              <FaRedo className="text-white text-xl" />
+              <FaRedo className="text-black text-xl" />
             </button>
 
             {/* Save/Confirm Button */}
