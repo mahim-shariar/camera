@@ -1,7 +1,13 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
+import {
+  FaCamera,
+  FaRedo,
+  FaCheck,
+  FaExclamationTriangle,
+} from "react-icons/fa";
 
-const FullHeightCamera = () => {
+const FullScreenCamera = () => {
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
   const [flashEffect, setFlashEffect] = useState(false);
@@ -68,59 +74,33 @@ const FullHeightCamera = () => {
       {/* Error Message */}
       {permissionError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-90 text-white p-4 text-center">
-          <div className="bg-red-500 rounded-full p-3 mb-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
+          <div className="bg-red-500 rounded-full p-4 mb-4">
+            <FaExclamationTriangle className="text-2xl" />
           </div>
           <h2 className="text-xl font-bold mb-2">Camera Access Required</h2>
-          <p className="mb-4 text-gray-300 text-sm">
+          <p className="mb-4 text-gray-300">
             Please enable camera permissions in your browser settings
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-full text-sm"
+            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-full transition-colors"
           >
             Reload & Allow
           </button>
         </div>
       )}
 
-      {/* Action Buttons - Fixed at bottom */}
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+      {/* Action Buttons */}
+      <div className="absolute bottom-8 left-0 right-0 flex justify-center">
         {imgSrc ? (
-          <div className="flex space-x-6 bg-black bg-opacity-40 backdrop-blur-sm rounded-full p-3">
+          <div className="flex gap-6 bg-black bg-opacity-40 backdrop-blur-sm rounded-full p-3">
             {/* Retake Button */}
             <button
               onClick={retake}
               className="flex items-center justify-center bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-4 transition-all"
               aria-label="Retake photo"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
+              <FaRedo className="text-white text-xl" />
             </button>
 
             {/* Save/Confirm Button */}
@@ -129,20 +109,7 @@ const FullHeightCamera = () => {
               className="flex items-center justify-center bg-green-500 hover:bg-green-600 rounded-full p-4 transition-all"
               aria-label="Save photo"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <FaCheck className="text-white text-xl" />
             </button>
           </div>
         ) : (
@@ -151,15 +118,15 @@ const FullHeightCamera = () => {
             disabled={permissionError}
             className={`relative h-16 w-16 rounded-full border-4 border-white ${
               permissionError ? "bg-gray-500" : "bg-red-500 hover:bg-red-600"
-            } shadow-lg transition-all`}
+            } shadow-lg transition-all flex items-center justify-center`}
             aria-label="Take photo"
           >
-            <span className="sr-only">Capture photo</span>
+            <FaCamera className="text-white text-xl" />
           </button>
         )}
       </div>
 
-      {/* Add custom animations to Tailwind config */}
+      {/* Flash animation style */}
       <style jsx global>{`
         @keyframes flash {
           0% {
@@ -177,4 +144,4 @@ const FullHeightCamera = () => {
   );
 };
 
-export default FullHeightCamera;
+export default FullScreenCamera;
